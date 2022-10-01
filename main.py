@@ -5,23 +5,28 @@ from get_data import Authenticator
 from datahandler import DataHandler
 from mqtt import MQTTPublish
 
-MQTT_IP = sys.argv[1]
-MQTT_USERNAME = sys.argv[2]
-MQTT_PASSWORD = sys.argv[3]
-TEAPI_USERNAME = sys.argv[4]
-TEAPI_PASSWORD = sys.argv[5]
+settings = dict()
+settings['MQTT_IP'] = sys.argv[1]
+settings['MQTT_USERNAME'] = sys.argv[2]
+settings['MQTT_PASSWORD'] = sys.argv[3]
+settings['TEAPI_USERNAME'] = sys.argv[4]
+settings['TEAPI_PASSWORD'] = sys.argv[5]
 
+for key, value in settings.items():
+	if not value:
+		print("{} not defined.".format(key))
+		
 # MQTT Publish
 mqtt = MQTTPublish(
-    ip=MQTT_IP,
-    username=MQTT_USERNAME,
-    password=MQTT_PASSWORD,
+    ip=settings['MQTT_IP'],
+    username=settings['MQTT_USERNAME'],
+    password=settings['MQTT_PASSWORD'],
     datafile="values.txt"
 )
 
 today = datetime.datetime.today()
 
-auth = Authenticator(TEAPI_USERNAME, TEAPI_PASSWORD, "excel.xlsx")
+auth = Authenticator(settings['TEAPI_USERNAME'], settings['TEAPI_PASSWORD'], "excel.xlsx")
 if auth.authenticate():
     print("Authentication successful on {}".format(today))
     if auth.save_excel_to_file():
