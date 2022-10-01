@@ -1,1 +1,1 @@
-* 5 * * * /workdir/run.sh
+0 5 * * * /workdir/run.sh

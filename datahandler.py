@@ -1,6 +1,7 @@
 from datetime import datetime
 from openpyxl import load_workbook
 
+
 class DataHandler:
     def __init__(self, inputfile):
         self.date = None
