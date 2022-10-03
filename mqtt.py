@@ -1,6 +1,6 @@
 import time
 import json
-import paho.mqtt.client as mqtt 
+import paho.mqtt.client as mqtt
 
 
 class MQTTPublish:
@@ -23,11 +23,11 @@ class MQTTPublish:
         with open(self.datafile, "r") as file:
             values = file.readline()
             values = values.split("|")
-            
+
             self.state_payload = {
                 "date": values[0],
                 "kwh": values[1],
-                "temperature": values[2]
+                "temperature": values[2],
             }
 
     def _publish_config(self):
@@ -36,16 +36,13 @@ class MQTTPublish:
             "device_class": "temperature",
             "state_topic": "homeassistant/sensor/teapi_energy/state",
             "unique_id": "teapi-daily-kwh-consumption",
-            "value_template": "{{ value_json.kwh }}"
+            "value_template": "{{ value_json.kwh }}",
         }
         self.client.publish(
-            "{}config".format(self.topic_preset),
-            json.dumps(payload),
-            retain=True
+            "{}config".format(self.topic_preset), json.dumps(payload), retain=True
         )
 
     def publish_state(self):
         self.client.publish(
-            "{}state".format(self.topic_preset),
-            json.dumps(self.state_payload)
+            "{}state".format(self.topic_preset), json.dumps(self.state_payload)
         )
